@@ -17,8 +17,20 @@ blogsRouter.post("/", async (req, res, next) => {
 
 blogsRouter.get("/", async (req, res, next) => {
   try {
-    const blogs = await BlogsModel.find();
-    res.send(blogs);
+    const mongoQuery = q2m(req.query);
+    const total = await BlogsModel.countDocuments(mongoQuery.criteria);
+    const blogs = await BlogsModel.find(
+      mongoQuery.criteria,
+      mongoQuery.options.fields
+    )
+      .limit(mongoQuery.options.limit)
+      .skip(mongoQuery.options.skip)
+      .sort(mongoQuery.options.sort);
+    res.send({
+      links: mongoQuery.links("http://localhost:3001/blogs", total),
+      totalPages: Math.ceil(total / mongoQuery.options.limit),
+      blogs,
+    });
   } catch (error) {
     next(error);
   }

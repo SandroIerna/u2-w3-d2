@@ -43,7 +43,7 @@ blogsRouter.get("/:blogId", async (req, res, next) => {
       res.send(blog);
     } else {
       next(
-        createHttpError(404, `Blow with id ${req.params.blogId} not found!`)
+        createHttpError(404, `Blog with id ${req.params.blogId} not found!`)
       );
     }
   } catch (error) {

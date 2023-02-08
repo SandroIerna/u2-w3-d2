@@ -22,7 +22,7 @@ export const unauthorizedHandler = (err, req, res, next) => {
 
 export const forbiddenHandler = (err, req, res, next) => {
   if (err.status === 403) {
-    res.status(403).semd({ message: err.message });
+    res.status(403).send({ message: err.message });
   } else {
     next(err);
   }

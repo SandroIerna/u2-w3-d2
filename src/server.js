@@ -11,7 +11,7 @@ import {
 } from "./errorHandlers.js";
 
 const server = express();
-const port = 3001;
+const port = process.env.PORT;
 
 // ****************************** MIDDLEWARES ******************************
 

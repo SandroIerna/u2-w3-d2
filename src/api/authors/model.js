@@ -1,7 +1,7 @@
 import mongoose, { model } from "mongoose";
 import bcrypt from "bcrypt";
 
-const { Schema, model } = mongoose;
+const { Schema } = mongoose;
 
 const authorSchema = new Schema(
   {

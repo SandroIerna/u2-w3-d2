@@ -6,8 +6,10 @@ import blogsRouter from "./api/blogs/index.js";
 import authorsRouter from "./api/authors/index.js";
 import {
   badRequestHandler,
+  forbiddenHandler,
   genericErrorHandler,
   notFoundHandler,
+  unauthorizedHandler,
 } from "./errorHandlers.js";
 
 const server = express();
@@ -26,6 +28,8 @@ server.use("/blogs", blogsRouter);
 // ***************************** ERROR HANDLERS ****************************
 
 server.use(badRequestHandler);
+server.use(unauthorizedHandler);
+server.use(forbiddenHandler);
 server.use(notFoundHandler);
 server.use(genericErrorHandler);
 

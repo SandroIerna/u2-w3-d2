@@ -1,5 +1,6 @@
 import express from "express";
 import createHttpError from "http-errors";
+import { basicAuthMiddleware } from "../../lib/auth/basicAuth.js";
 import AuthorsModel from "./model.js";
 
 const authorsRouter = express.Router();
@@ -14,7 +15,7 @@ authorsRouter.post("/", async (req, res, next) => {
   }
 });
 
-authorsRouter.get("/", async (req, res, next) => {
+authorsRouter.get("/", basicAuthMiddleware, async (req, res, next) => {
   try {
     const authors = await AuthorsModel.find();
     res.send(authors);

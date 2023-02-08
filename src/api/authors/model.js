@@ -8,8 +8,9 @@ const authorSchema = new Schema(
     name: { type: String, required: true },
     avatar: { type: String, required: false },
     blogPosts: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
+    email: { type: String, required: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["User", "Admin"], default: "User" },
+    /*     role: { type: String, enum: ["User", "Admin"], default: "User" }, */
   },
   { timestamps: true }
 );
@@ -18,8 +19,7 @@ authorSchema.pre("save", async function (next) {
   const currentAuthor = this;
   if (currentAuthor.isModified("password")) {
     const plainPW = currentAuthor.password;
-    const hash = await bcrypt.hash(plainPW, 11);
-    currentAuthor.password = hash;
+    currentAuthor.password = await bcrypt.hash(plainPW, 11);
   }
   next();
 });
@@ -38,7 +38,7 @@ authorSchema.methods.toJSON = function () {
 authorSchema.static("checkCredentials", async function (email, password) {
   const author = await this.findOne({ email });
   if (author) {
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, author.password);
     if (passwordMatch) {
       return author;
     } else {
